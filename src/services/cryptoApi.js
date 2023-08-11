@@ -23,7 +23,17 @@ export const cryptoApi = createApi({
       query: (uuid) =>
         createRequest(`https://coinranking1.p.rapidapi.com/coin/${uuid}`),
     }),
+    getCryptoHistory: builder.query({
+      query: (uuid, timePeriod) =>
+        createRequest(
+          `https://coinranking1.p.rapidapi.com/coin/${uuid}/history/${timePeriod}`
+        ),
+    }),
   }),
 });
 
-export const { useGetCoinsQuery, useGetCryptoDetailsQuery } = cryptoApi;
+export const {
+  useGetCoinsQuery,
+  useGetCryptoDetailsQuery,
+  useGetCryptoHistoryQuery,
+} = cryptoApi;
