@@ -3,14 +3,12 @@ import millify from "millify";
 import { Typography, Row, Col, Statistic } from "antd";
 import { Link } from "react-router-dom";
 // import { useGetCryptoQuery } from "../services/cryptoApi";
-import { useGetCoinsQuery, useGetCoinQuery } from "../services/cryptoApi";
+import { useGetCoinsQuery } from "../services/cryptoApi";
 import Cryptocurrencies from "./Cryptocurrencies";
-import News from "./News";
 
 const Homepage = () => {
   // const { data: coinsData, isFetching: isCoinsFetching  } = useGetCryptoQuery();
   const { data: coinsData, isFetching: isCoinsFetching } = useGetCoinsQuery(10);
-  const { data: coinData } = useGetCoinQuery();
 
   if (isCoinsFetching) return "loading";
   const globalStats = coinsData?.data?.stats;
@@ -60,15 +58,6 @@ const Homepage = () => {
         </Typography.Title>
       </div>
       <Cryptocurrencies simplified />
-      <div className="home-heading-container">
-        <Typography.Title level={2} className="home-title">
-          Top 10 cryptocurrencies in the world
-        </Typography.Title>
-        <Typography.Title level={3} className="show-more">
-          <Link to="/cryptocurrencies">Show more</Link>
-        </Typography.Title>
-      </div>
-      <News simplified />
     </>
   );
 };

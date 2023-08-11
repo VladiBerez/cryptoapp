@@ -8,7 +8,6 @@ import Homepage from "./components/Homepage";
 import Exchanges from "./components/Exchanges";
 import Cryptocurrencies from "./components/Cryptocurrencies";
 import CryptoDetails from "./components/CryptoDetails";
-import News from "./components/News";
 const App = () => {
   return (
     <div className="app">
@@ -26,11 +25,7 @@ const App = () => {
                   path="/cryptocurrencies"
                   element={<Cryptocurrencies />}
                 ></Route>
-                <Route
-                  path="/crypto/:coindId"
-                  element={<CryptoDetails />}
-                ></Route>
-                <Route path="/news" element={<News />}></Route>
+                <Route path="/crypto/:uuid" element={<CryptoDetails />}></Route>
               </Routes>
             </div>
           </Layout>
@@ -47,7 +42,6 @@ const App = () => {
         <Space>
           <Link to="/">Home</Link>
           <Link to="/exchanges">Exchanges</Link>
-          <Link to="/news">News</Link>
         </Space>
       </div>
     </div>
