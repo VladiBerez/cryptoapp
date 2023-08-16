@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import millify from "millify";
 import parse from "html-react-parser";
-import { Row, Col, Select, Typography } from "antd";
+import { Row, Col, Select, Typography, Avatar, Collapse } from "antd";
 import {
   MoneyCollectOutlined,
   DollarCircleOutlined,
@@ -15,23 +15,21 @@ import {
   ThunderboltOutlined,
 } from "@ant-design/icons";
 import { useGetCryptoDetailsQuery } from "../services/cryptoApi";
-import { useGetCryptoHistoryQuery } from "../services/cryptoApi";
-import LineChart from "./LineChart";
+import { useGetExchangesQuery } from "../services/cryptoApi";
+import Loader from "./Loader";
+// import LineChart from "./LineChart";
 
 const { Title, Text } = Typography;
-const { Option } = Select;
+const { Panel } = Collapse;
 
 const CryptoDetails = () => {
-  const [timePeriod, setTimePeriod] = useState("7d");
   const { uuid } = useParams();
   const { data, isFetching } = useGetCryptoDetailsQuery(uuid);
-  const { data: coinHistory, isFetching: isFetchingData } =
-    useGetCryptoHistoryQuery({ uuid, timePeriod });
+  const { data: coinExchanges, isFetching: isFetchingDataExchanges } =
+    useGetExchangesQuery(uuid);
 
   const cryptoDetails = data?.data?.coin;
-  console.log(cryptoDetails);
-
-  const time = ["3h", "24h", "7d", "30d", "1y", "3m", "3y", "5y"];
+  const exchangeDeatails = coinExchanges?.data?.exchanges;
 
   const stats = [
     {
@@ -101,8 +99,8 @@ const CryptoDetails = () => {
     },
   ];
 
-  if (isFetching) return "...loading";
-  if (isFetchingData) return "history loading...";
+  if (isFetching) return <Loader />;
+  if (isFetchingDataExchanges) return <Loader />;
 
   return (
     <Col className="coin-detail-container">
@@ -112,33 +110,18 @@ const CryptoDetails = () => {
         </Title>
         <p>
           {cryptoDetails.name} Live price in US dollar. View value statistic,
-          market cap and supply
+          market cap and supply.
         </p>
-        <Select
-          className="select-timeperiod"
-          defaultValue="7d"
-          placeholder="select time period"
-          onChange={(value) => setTimePeriod(value)}
-        >
-          {time.map((date) => (
-            <Option key={date}>{date}</Option>
-          ))}
-        </Select>
-        <LineChart
-          coinHistory={coinHistory}
-          currentPrice={millify(cryptoDetails?.price)}
-          coinName={cryptoDetails?.name}
-        />
 
         <Col className="stats-container">
           <Col className="coin-value-statistics">
             <Col className="coin-value-statistics-heading">
               <Title level={3} className="coin-details-heading">
-                {cryptoDetails.name} Value statistic
+                {cryptoDetails.name} Value Statistics
               </Title>
-              <p>An overview snowing statistic of {cryptoDetails.name}</p>
+              <p>An overview showing statistics of {cryptoDetails.name}</p>
               {stats.map(({ icon, title, value }) => (
-                <Col className="coin-stats">
+                <Col className="coin-stats" key={title}>
                   <Col className="coin-stats-name">
                     <Text>{icon}</Text>
                     <Text>{title}</Text>
@@ -151,11 +134,11 @@ const CryptoDetails = () => {
           <Col className="other-stats-info">
             <Col className="coin-value-statistics-heading">
               <Title level={3} className="coin-details-heading">
-                Other statistics
+                Other Statistics
               </Title>
-              <p>An overview snowing statistic of all crypto currencies</p>
+              <p>An overview showing statistics of all cryptocurrencies</p>
               {genericStats.map(({ icon, title, value }) => (
-                <Col className="coin-stats">
+                <Col className="coin-stats" key={title}>
                   <Col className="coin-stats-name">
                     <Text>{icon}</Text>
                     <Text>{title}</Text>
@@ -170,13 +153,13 @@ const CryptoDetails = () => {
       <Col className="coin-desc-link">
         <Row className="coin-desc">
           <Title level={3} className="coin-details-heading">
-            what is {cryptoDetails.name}
-            {parse(cryptoDetails.description)}
+            What is {cryptoDetails.name}?
           </Title>
+          {parse(cryptoDetails.description)}
         </Row>
         <Col className="coin-links">
           <Title level={3} className="coin-details-heading">
-            {cryptoDetails.link}
+            {cryptoDetails.name} Links
           </Title>
           {cryptoDetails?.links?.map((link) => (
             <Row className="coin-link" key={link.name}>
@@ -189,6 +172,46 @@ const CryptoDetails = () => {
             </Row>
           ))}
         </Col>
+      </Col>
+      <Row style={{ marginTop: "8vh" }}>
+        <Col span={6}>Exchanges</Col>
+        <Col span={6}>24h Volume</Col>
+        <Col span={6}>Price</Col>
+        <Col span={6}>Number of Markets</Col>
+      </Row>
+      <Col style={{ marginTop: "3vh" }}>
+        {exchangeDeatails.map((exchange) => (
+          <Row key={exchange.uuid}>
+            <Col span={24}>
+              <Collapse>
+                <Panel
+                  key={exchange.uuid}
+                  showArrow={false}
+                  header={
+                    <Row>
+                      <Col span={6}>
+                        <Avatar
+                          className="exchange-name"
+                          src={exchange.iconUrl}
+                        ></Avatar>
+                        <Text style={{ marginLeft: "15px" }}>
+                          <strong>{exchange.name}</strong>
+                        </Text>
+                      </Col>
+                      <Col span={6}>$ {millify(exchange?.["24hVolume"])}</Col>
+                      <Col span={6}>{millify(exchange?.price)}</Col>
+                      <Col span={6}>{millify(exchange?.numberOfMarkets)}</Col>
+                    </Row>
+                  }
+                >
+                  <a href={exchange?.coinrankingUrl}>
+                    {parse(exchange?.coinrankingUrl || "")}
+                  </a>
+                </Panel>
+              </Collapse>
+            </Col>
+          </Row>
+        ))}
       </Col>
     </Col>
   );
