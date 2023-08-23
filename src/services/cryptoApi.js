@@ -18,16 +18,22 @@ export const cryptoApi = createApi({
         createRequest(
           `/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=${count}&offset=0`
         ),
+      providesTags: ["Coins"],
+      ttl: 3600,
     }),
     getCryptoDetails: builder.query({
       query: (uuid) =>
         createRequest(`https://coinranking1.p.rapidapi.com/coin/${uuid}`),
+      provdesTags: ["CoinId"],
+      ttl: 3600,
     }),
     getExchanges: builder.query({
       query: (coin) =>
         createRequest(
           `https://coinranking1.p.rapidapi.com/coin/${coin}/exchanges`
         ),
+      providesTags: ["CoinExchanges"],
+      ttl: 3600,
     }),
   }),
 });

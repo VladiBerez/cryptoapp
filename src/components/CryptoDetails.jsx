@@ -2,7 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import millify from "millify";
 import parse from "html-react-parser";
-import { Row, Col, Select, Typography, Avatar, Collapse } from "antd";
+import { Row, Col, Typography } from "antd";
 import {
   MoneyCollectOutlined,
   DollarCircleOutlined,
@@ -15,21 +15,17 @@ import {
   ThunderboltOutlined,
 } from "@ant-design/icons";
 import { useGetCryptoDetailsQuery } from "../services/cryptoApi";
-import { useGetExchangesQuery } from "../services/cryptoApi";
+import Exchangers from "./Exchangers";
 import Loader from "./Loader";
 // import LineChart from "./LineChart";
 
 const { Title, Text } = Typography;
-const { Panel } = Collapse;
 
 const CryptoDetails = () => {
   const { uuid } = useParams();
   const { data, isFetching } = useGetCryptoDetailsQuery(uuid);
-  const { data: coinExchanges, isFetching: isFetchingDataExchanges } =
-    useGetExchangesQuery(uuid);
 
   const cryptoDetails = data?.data?.coin;
-  const exchangeDeatails = coinExchanges?.data?.exchanges;
 
   const stats = [
     {
@@ -100,7 +96,6 @@ const CryptoDetails = () => {
   ];
 
   if (isFetching) return <Loader />;
-  if (isFetchingDataExchanges) return <Loader />;
 
   return (
     <Col className="coin-detail-container">
@@ -155,7 +150,9 @@ const CryptoDetails = () => {
           <Title level={3} className="coin-details-heading">
             What is {cryptoDetails.name}?
           </Title>
-          {parse(cryptoDetails.description)}
+          <Title level={4} style={{ color: "black" }}>
+            {parse(cryptoDetails.description)}
+          </Title>
         </Row>
         <Col className="coin-links">
           <Title level={3} className="coin-details-heading">
@@ -163,7 +160,7 @@ const CryptoDetails = () => {
           </Title>
           {cryptoDetails?.links?.map((link) => (
             <Row className="coin-link" key={link.name}>
-              <Title level={5} className="link-name">
+              <Title level={4} className="link-name">
                 {link.type}
               </Title>
               <a href={link.url} target="_blank" rel="noreferrer">
@@ -173,46 +170,8 @@ const CryptoDetails = () => {
           ))}
         </Col>
       </Col>
-      <Row style={{ marginTop: "8vh" }}>
-        <Col span={6}>Exchanges</Col>
-        <Col span={6}>24h Volume</Col>
-        <Col span={6}>Price</Col>
-        <Col span={6}>Number of Markets</Col>
-      </Row>
-      <Col style={{ marginTop: "3vh" }}>
-        {exchangeDeatails.map((exchange) => (
-          <Row key={exchange.uuid}>
-            <Col span={24}>
-              <Collapse>
-                <Panel
-                  key={exchange.uuid}
-                  showArrow={false}
-                  header={
-                    <Row>
-                      <Col span={6}>
-                        <Avatar
-                          className="exchange-name"
-                          src={exchange.iconUrl}
-                        ></Avatar>
-                        <Text style={{ marginLeft: "15px" }}>
-                          <strong>{exchange.name}</strong>
-                        </Text>
-                      </Col>
-                      <Col span={6}>$ {millify(exchange?.["24hVolume"])}</Col>
-                      <Col span={6}>{millify(exchange?.price)}</Col>
-                      <Col span={6}>{millify(exchange?.numberOfMarkets)}</Col>
-                    </Row>
-                  }
-                >
-                  <a href={exchange?.coinrankingUrl}>
-                    {parse(exchange?.coinrankingUrl || "")}
-                  </a>
-                </Panel>
-              </Collapse>
-            </Col>
-          </Row>
-        ))}
-      </Col>
+      {/* Обменники/ */}
+      <Exchangers uuid={uuid} />
     </Col>
   );
 };

@@ -30,7 +30,7 @@ a:hover {
 
 .main {
   flex: 0.8;
-  width: 100%;
+  width: auto;
 }
 .routes {
   padding: 20px;
@@ -53,7 +53,7 @@ a:hover {
   width: 100%;
 }
 .logo {
-  margin: 0 0 0 15px;
+  /* margin: 0 0 0 15px; */
 }
 .logo a {
   color: white;
@@ -74,12 +74,12 @@ a:hover {
   justify-content: center;
   align-items: center;
 }
-@media screen and (min-width: 117px) {
+@media screen and (min-width: 800px) {
   .main {
-    margin-left: 219px;
+    margin-left: 207px;
   }
 }
-
+/* 
 @media screen and (max-width: 1300px) {
   .main {
     margin-left: 50px;
@@ -96,7 +96,7 @@ a:hover {
   .main {
     margin-left: 100px;
   }
-}
+} */
 
 @media screen and (max-width: 800px) {
   .app {
@@ -296,25 +296,6 @@ a:hover {
 .select-news {
   width: 180px;
 }
-.news-card {
-  min-height: 300px !important;
-}
-.news-image-container {
-  display: flex !important;
-  justify-content: space-between !important;
-}
-.news-title {
-  width: 70%;
-}
-
-.news-image-container .img {
-  width: 100px;
-  height: 100px;
-}
-.news-card p {
-  color: black;
-  margin: 10px 0px !important;
-}
 .provider-container {
   display: flex;
   justify-content: space-between;
@@ -381,4 +362,13 @@ a:hover {
   flex-direction: column;
   padding: 20px;
   align-items: center;
+}
+
+.footer-link {
+  color: white;
+  transition: all 0.5s ease;
+}
+
+.footer-link:hover {
+  color: black;
 }

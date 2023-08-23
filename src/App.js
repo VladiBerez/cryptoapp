@@ -31,15 +31,23 @@ const App = () => {
       </>
       <div
         className="footer"
-        level={5}
+        level={4}
         style={{ color: "white", textAlign: "center" }}
       >
-        <Typography.Title>
+        <Typography.Title style={{ color: "white" }}>
           Cryptoverse <br /> All rights reserved
         </Typography.Title>
         <Space>
-          <Link to="/">Home</Link>
-          <Link to="/cryptocurrencies">Сryptocurrencies</Link>
+          <Link to="/" className="footer-link">
+            Home
+          </Link>
+          <Link
+            to="/cryptocurrencies"
+            className="footer-link"
+            // style={{ color: "white" }}
+          >
+            Сryptocurrencies
+          </Link>
         </Space>
       </div>
     </div>
