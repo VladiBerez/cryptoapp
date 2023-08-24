@@ -23,14 +23,14 @@ export const cryptoApi = createApi({
     }),
     getCryptoDetails: builder.query({
       query: (uuid) =>
-        createRequest(`https://coinranking1.p.rapidapi.com/coin/${uuid}`),
+        createRequest(`/coin/${uuid}`),
       provdesTags: ["CoinId"],
       ttl: 3600,
     }),
     getExchanges: builder.query({
       query: (coin) =>
         createRequest(
-          `https://coinranking1.p.rapidapi.com/coin/${coin}/exchanges`
+          `/coin/${coin}/exchanges`
         ),
       providesTags: ["CoinExchanges"],
       ttl: 3600,
