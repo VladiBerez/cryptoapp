@@ -22,19 +22,33 @@ export const cryptoApi = createApi({
       ttl: 3600,
     }),
     getCryptoDetails: builder.query({
-      query: (uuid) =>
-        createRequest(`/coin/${uuid}`),
+      query: (uuid) => createRequest(`/coin/${uuid}`),
       provdesTags: ["CoinId"],
       ttl: 3600,
     }),
     getExchanges: builder.query({
-      query: (coin) =>
-        createRequest(
-          `/coin/${coin}/exchanges`
-        ),
+      query: (coin) => createRequest(`/coin/${coin}/exchanges`),
       providesTags: ["CoinExchanges"],
       ttl: 3600,
     }),
+    // addToFavourites: builder.mutation({
+    //   query: (currencyId) => ({
+    //     url: `favourites/${currencyId}`,
+    //     method: "POST",
+    //   }),
+    //   onMutate: (currencyId) => {
+    //     dispatchAddToFavouriteCoin(currencyId);
+    //   },
+    // }),
+    // removeFavourites: builder.mutation({
+    //   query: (currencyId) => ({
+    //     url: `favourites/${currencyId}`,
+    //     method: "DELETE",
+    //   }),
+    //   onMutate: (currencyId) => {
+    //     dispatchRemoveFavouriteCoin(currencyId);
+    //   },
+    // }),
   }),
 });
 
@@ -42,4 +56,6 @@ export const {
   useGetCoinsQuery,
   useGetCryptoDetailsQuery,
   useGetExchangesQuery,
+  // useAddToFavouritesMutation,
+  // useRemoveFavouritesMutation,
 } = cryptoApi;
