@@ -350,6 +350,17 @@ a:hover {
 }
 .crypto-card .crypto-image {
   width: 35px;
+  height: 35px;
+  object-fit: cover;
+}
+.crypto-favourites{
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
 }
 .select-timeperiod {
   width: 200px !important;
