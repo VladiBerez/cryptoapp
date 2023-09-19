@@ -11,7 +11,7 @@ const Homepage = () => {
   const { data: coinsData, isFetching: isCoinsFetching } = useGetCoinsQuery(10);
 
   if (isCoinsFetching) return "loading";
-  const globalStats = coinsData?.data?.stats;
+  const globalStats = coinsData?.data?.stats || [];
   return (
     <>
       <Typography.Title level="2" className="heading">
