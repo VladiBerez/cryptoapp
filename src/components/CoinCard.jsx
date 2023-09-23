@@ -1,4 +1,3 @@
-// import React, { useState } from "react";
 import millify from "millify";
 import { Link } from "react-router-dom";
 import { Card, Col } from "antd";
@@ -8,15 +7,13 @@ import {
   removeFavouriteCoin,
 } from "../redux/slices/sliceFavourites";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const CoinCard = ({ currency }) => {
   const dispatch = useDispatch();
-  const isFavourite = useSelector((state) =>
-    state.favourites.includes(currency.uuid)
-  );
 
   const addCoinToFavouriteLocalStorage = (uuid) => {
-    const favourites = JSON.parse(localStorage.getItem("favourites") || []);
+    const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
     if (!favourites.includes(uuid)) {
       favourites.push(uuid);
       localStorage.setItem("favourites", JSON.stringify(favourites));
@@ -24,13 +21,27 @@ const CoinCard = ({ currency }) => {
   };
 
   const removeCoinToFavouriteLocalStorage = (uuid) => {
-    const favourites = JSON.parse(localStorage.getItem("favourites") || []);
+    const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
     const index = favourites.indexOf(uuid);
     if (index !== -1) {
       favourites.splice(index, 1);
       localStorage.setItem("favourites", JSON.stringify(favourites));
     }
   };
+
+  const isFavourite = useSelector((state) =>
+    state.favourites.includes(currency.uuid)
+  );
+
+  useEffect(() => {
+    const favouritesFromStorage = JSON.parse(
+      localStorage.getItem("favourites") || "[]"
+    );
+
+    if (favouritesFromStorage.includes(currency.uuid) && !isFavourite) {
+      dispatch(addToFavouriteCoin(currency.uuid));
+    }
+  }, [currency.uuid, dispatch, isFavourite]);
 
   const handleFavourite = (e) => {
     e.preventDefault();

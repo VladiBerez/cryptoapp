@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 import Homepage from "./components/Homepage";
 import Cryptocurrencies from "./components/Cryptocurrencies";
 import CryptoDetails from "./components/CryptoDetails";
+import Favourites from "./components/Favourites";
 const App = () => {
   return (
     <div className="app">
@@ -24,6 +25,7 @@ const App = () => {
                   element={<Cryptocurrencies />}
                 ></Route>
                 <Route path="/crypto/:uuid" element={<CryptoDetails />}></Route>
+                <Route path="/favourites" element={<Favourites />}></Route>
               </Routes>
             </div>
           </Layout>

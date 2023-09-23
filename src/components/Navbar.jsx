@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Menu, Typography, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { HomeOutlined, FundOutlined, HeartOutlined } from "@ant-design/icons";
 import icon from "../images/cryptocurrency.png";
 
 const Navbar = () => {
-  const [quantityFavouritesCoins, setQuantityFavouritesCoins] = useState(0);
-  useEffect(() => {
-    const storedFavourites = JSON.parse(
-      localStorage.getItem("favourites") || []
-    );
-    setQuantityFavouritesCoins(storedFavourites.length);
-  }, []);
+  const favouritesState = useSelector((state) => state.favourites);
+  const quantityFavourites = Object.keys(favouritesState).length;
+  console.log(favouritesState);
   return (
     <div className="nav-container">
       <div className="logo-container">
@@ -28,8 +24,7 @@ const Navbar = () => {
           </Menu.Item>
           <Menu.Item key="favourites" icon={<HeartOutlined />}>
             <Link to="/favourites">
-              My Favourite{" "}
-              <Avatar size="small" icon={quantityFavouritesCoins} />
+              My Favourite <Avatar size="small" icon={quantityFavourites} />
             </Link>
           </Menu.Item>
         </Menu>
