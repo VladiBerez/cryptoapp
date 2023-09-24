@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 import { Card, Col } from "antd";
 import { StarOutlined, StarFilled } from "@ant-design/icons";
 import {
-  addToFavouriteCoin,
-  removeFavouriteCoin,
+  addToFavouriteCoinId,
+  removeFavouriteCoinId
 } from "../redux/slices/sliceFavourites";
+import { pushToFavouriteCoinFull, deleteFromFavouriteCoinFull } from "../redux/slices/sliceFavouritesCoins";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
@@ -13,44 +14,57 @@ const CoinCard = ({ currency }) => {
   const dispatch = useDispatch();
 
   const addCoinToFavouriteLocalStorage = (uuid) => {
-    const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+    const favourites = JSON.parse(localStorage.getItem("favouritesId") || "[]");
     if (!favourites.includes(uuid)) {
       favourites.push(uuid);
-      localStorage.setItem("favourites", JSON.stringify(favourites));
+      localStorage.setItem("favouritesId", JSON.stringify(favourites));
     }
   };
-
+  
   const removeCoinToFavouriteLocalStorage = (uuid) => {
-    const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+    const favourites = JSON.parse(localStorage.getItem("favouritesId") || "[]");
     const index = favourites.indexOf(uuid);
     if (index !== -1) {
       favourites.splice(index, 1);
-      localStorage.setItem("favourites", JSON.stringify(favourites));
+      localStorage.setItem("favouritesId", JSON.stringify(favourites));
     }
   };
+  
 
   const isFavourite = useSelector((state) =>
-    state.favourites.includes(currency.uuid)
+    state.favouritesId.includes(currency.uuid)
   );
-
+  isFavourite ? console.log('favourite true') : console.log('favourite false');
+  // console.log(isFavourite);
+  // localStorage.clear();
   useEffect(() => {
     const favouritesFromStorage = JSON.parse(
-      localStorage.getItem("favourites") || "[]"
+      localStorage.getItem("favouritesId") || "[]"
     );
 
-    if (favouritesFromStorage.includes(currency.uuid) && !isFavourite) {
-      dispatch(addToFavouriteCoin(currency.uuid));
+    if (favouritesFromStorage.includes(currency.uuid) && !isFavourite ) {
+      dispatch(addToFavouriteCoinId(currency.uuid));
+      dispatch(pushToFavouriteCoinFull(currency));
+      console.log('dispathced add from localStorage')
+      console.log(currency.uuid);
     }
   }, [currency.uuid, dispatch, isFavourite]);
+  
 
   const handleFavourite = (e) => {
     e.preventDefault();
     if (isFavourite) {
-      dispatch(removeFavouriteCoin(currency.uuid));
+      dispatch(removeFavouriteCoinId(currency.uuid));
+      dispatch(deleteFromFavouriteCoinFull(currency));
       removeCoinToFavouriteLocalStorage(currency.uuid);
+      console.log('dispathced remove from LocalStorage')
+
     } else {
-      dispatch(addToFavouriteCoin(currency.uuid));
+      dispatch(addToFavouriteCoinId(currency.uuid));
+      dispatch(pushToFavouriteCoinFull(currency))
       addCoinToFavouriteLocalStorage(currency.uuid);
+      console.log('dispathced add from click')
+
     }
   };
 

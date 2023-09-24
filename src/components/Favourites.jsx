@@ -5,7 +5,7 @@ import { StarOutlined, StarFilled } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 const Favourites = () => {
-  const favouriteCards = useSelector((state) => state.favourites);
+  const favouriteCards = useSelector((state) => state.favouritesCoin);
   console.log(favouriteCards);
   return (
     <Row gutter={[32, 32]} className="crypto-card-container">

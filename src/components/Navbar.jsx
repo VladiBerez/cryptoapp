@@ -5,7 +5,8 @@ import { HomeOutlined, FundOutlined, HeartOutlined } from "@ant-design/icons";
 import icon from "../images/cryptocurrency.png";
 
 const Navbar = () => {
-  const favouritesState = useSelector((state) => state.favourites);
+  const favouritesState = useSelector((state) => state.favouritesCoin);
+  console.log(favouritesState)
   const quantityFavourites = Object.keys(favouritesState).length;
   console.log(favouritesState);
   return (
