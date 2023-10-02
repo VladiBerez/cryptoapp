@@ -6,9 +6,7 @@ import icon from "../images/cryptocurrency.png";
 
 const Navbar = () => {
   const favouritesState = useSelector((state) => state.favouritesCoin);
-  console.log(favouritesState)
   const quantityFavourites = Object.keys(favouritesState).length;
-  console.log(favouritesState);
   return (
     <div className="nav-container">
       <div className="logo-container">

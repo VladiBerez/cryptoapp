@@ -6,11 +6,23 @@ import { useSelector } from "react-redux";
 
 const Favourites = () => {
   const favouriteCards = useSelector((state) => state.favouritesCoin);
-  console.log(favouriteCards);
+
+  function compareFavouriteCards(list) {
+    return(a, b) => {
+      if(a[list] < b[list]) {
+        return -1;
+      } if(a[list] > b[list]) {
+        return 1;
+      } return 0
+    };
+  };
+
+  const sortedListFavouriteCards = [...favouriteCards].sort(compareFavouriteCards('rank'))
+  // console.log(favouriteCards);
   return (
     <Row gutter={[32, 32]} className="crypto-card-container">
-      {favouriteCards.map((currency) => (
-        <Col xs={24} sm={12} lg={6} className="crypto-card">
+      {sortedListFavouriteCards.map((currency) => (
+        <Col key={currency.uuid} xs={24} sm={12} lg={6} className="crypto-card">
           <Link key={currency.uuid} to={`/crypto/${currency.uuid}`}>
             <Card
               title={`${currency.rank}. ${currency.name}`}

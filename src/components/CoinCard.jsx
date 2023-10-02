@@ -34,9 +34,7 @@ const CoinCard = ({ currency }) => {
   const isFavourite = useSelector((state) =>
     state.favouritesId.includes(currency.uuid)
   );
-  isFavourite ? console.log('favourite true') : console.log('favourite false');
-  // console.log(isFavourite);
-  // localStorage.clear();
+  
   useEffect(() => {
     const favouritesFromStorage = JSON.parse(
       localStorage.getItem("favouritesId") || "[]"
@@ -45,8 +43,7 @@ const CoinCard = ({ currency }) => {
     if (favouritesFromStorage.includes(currency.uuid) && !isFavourite ) {
       dispatch(addToFavouriteCoinId(currency.uuid));
       dispatch(pushToFavouriteCoinFull(currency));
-      console.log('dispathced add from localStorage')
-      console.log(currency.uuid);
+      
     }
   }, [currency.uuid, dispatch, isFavourite]);
   
